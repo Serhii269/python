@@ -18,7 +18,7 @@ for symbol in name:
     if symbol in string.punctuation and symbol != "_":
         result = False
 
-if "__" in name:
+if name.strip("_") == "" and name.count("_") > 1:
     result = False
 
 if name in keyword.kwlist:
