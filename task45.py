@@ -1,51 +1,37 @@
-class Fraction:
-    def __init__(self, a, b):
-        self.a = a  
-        self.b = b  
+class Rectangle:
+    def __init__(self, width, height):
+        if width <= 0 or height <= 0:
+            raise ValueError("Width and height must be positive")
+        self.width = width
+        self.height = height
 
-    def __mul__(self, other):
-        return Fraction(self.a * other.a, self.b * other.b)
+    def get_square(self):
+        return self.width * self.height
 
     def __add__(self, other):
-        new_a = self.a * other.b + other.a * self.b
-        new_b = self.b * other.b
-        return Fraction(new_a, new_b)
-
-    def __sub__(self, other):
-        new_a = self.a * other.b - other.a * self.b
-        new_b = self.b * other.b
-        return Fraction(new_a, new_b)
+        if not isinstance(other, Rectangle):
+            return NotImplemented
+        return Rectangle(
+            self.width + other.width,
+            self.height + other.height
+        )
 
     def __eq__(self, other):
-        return self.a * other.b == other.a * self.b
-
-    def __gt__(self, other):
-        return self.a * other.b > other.a * self.b
-
-    def __lt__(self, other):
-        return self.a * other.b < other.a * self.b
+        if not isinstance(other, Rectangle):
+            return NotImplemented
+        return self.width == other.width and self.height == other.height
 
     def __str__(self):
-        return f"Fraction: {self.a}, {self.b}"
+        return f"Rectangle: {self.width} x {self.height}"
+    
+r1 = Rectangle(2, 3)
+r2 = Rectangle(4, 5)
 
-f_a = Fraction(2, 3)
-f_b = Fraction(3, 6)
+r3 = r1 + r2
 
-f_c = f_b + f_a
-assert str(f_c) == 'Fraction: 21, 18'
+assert r3.width == 6
+assert r3.height == 8
+assert r3.get_square() == 48
 
-f_d = f_b * f_a
-assert str(f_d) == 'Fraction: 6, 18'
-
-f_e = f_a - f_b
-assert str(f_e) == 'Fraction: 3, 18'
-
-assert f_d < f_c  
-assert f_d > f_e  
-assert f_a != f_b  
-
-f_1 = Fraction(2, 4)
-f_2 = Fraction(3, 6)
-assert f_1 == f_2  
-
-print('OK')
+print(r3)  
+print("OK")
