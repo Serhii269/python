@@ -1,37 +1,51 @@
 class Rectangle:
+    
     def __init__(self, width, height):
         if width <= 0 or height <= 0:
             raise ValueError("Width and height must be positive")
         self.width = width
         self.height = height
-
+    
     def get_square(self):
         return self.width * self.height
-
-    def __add__(self, other):
-        if not isinstance(other, Rectangle):
-            return NotImplemented
-        return Rectangle(
-            self.width + other.width,
-            self.height + other.height
-        )
 
     def __eq__(self, other):
         if not isinstance(other, Rectangle):
             return NotImplemented
-        return self.width == other.width and self.height == other.height
+        return self.get_square() == other.get_square()
+
+    def __add__(self, other):
+        if not isinstance(other, Rectangle):
+            return NotImplemented
+        
+        new_area = self.get_square() + other.get_square()
+        
+        new_height = new_area / self.width
+        
+        return Rectangle(self.width, new_height)
+
+    def __mul__(self, n):
+        if not isinstance(n, (int, float)):
+            return NotImplemented
+        
+        new_area = self.get_square() * n
+        new_height = new_area / self.width
+        
+        return Rectangle(self.width, new_height)
 
     def __str__(self):
         return f"Rectangle: {self.width} x {self.height}"
     
-r1 = Rectangle(2, 3)
-r2 = Rectangle(4, 5)
+r1 = Rectangle(2, 4)
+r2 = Rectangle(3, 6)
+
+assert r1.get_square() == 8
+assert r2.get_square() == 18
 
 r3 = r1 + r2
+assert r3.get_square() == 26
 
-assert r3.width == 6
-assert r3.height == 8
-assert r3.get_square() == 48
+r4 = r1 * 4
+assert r4.get_square() == 32
 
-print(r3)  
-print("OK")
+assert Rectangle(3, 6) == Rectangle(2, 9)
